@@ -2,7 +2,7 @@ const db = require("./db");
 const bcrypt = require("bcryptjs");
 
 const initUserArray = [
-  { name: 'Rohit', email: 'rohit@gmail.com', password: "Rohit@123", userType: 'free'},
+  { name: 'Cintani Muljono', email: 'cintani_muljono@hotmail.com', password: "Cintani@123", userType: 'free'},
   { name: 'Rahul', email: 'rahul@gmail.com', password: "Rahul@123", userType: 'premium'},
   { name: 'Admin', email: 'admin@gmail.com', password: "Admin@123", userType: 'admin'},
 ]
