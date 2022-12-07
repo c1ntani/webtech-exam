@@ -44,6 +44,9 @@ localhost:5000/
 
 ## API Documentation
 
+Postman documentation
+https://documenter.getpostman.com/view/5198472/2s8YzQW4Nj
+
 #### User Details
 ```
 free user
