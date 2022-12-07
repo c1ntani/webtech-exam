@@ -44,6 +44,26 @@ localhost:5000/
 
 ## API Documentation
 
+#### User Details
+```
+free user
+email: cintani_muljono@hotmail.com
+passsword: Cintani@123
+```
+
+```
+premium user
+email: rahul@gmail.com
+passsword: Rahul@123
+```
+
+```
+admin
+email: admin@gmail.com
+passsword: Admin@123
+```
+
+
 ### POST /login
 This api use for login all roles Admin, Premium & Free Users.<br>
 
@@ -317,6 +337,194 @@ Get All premium recipes using token `(Access premium)`.<br>
             "Category": "premium",
             "CreatedAt": "2022-12-07 00:20:32",
             "UpdatedAt": "2022-12-07 00:20:32"
+        }
+    ]
+}
+```
+---
+
+
+### GET /recipe-premium/3
+Get step overview by recipes id using token `(Access premium)`.<br>
+
+<b>Request Header :</b>
+```
+{
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjcwMzg3OTg3LCJleHAiOjE2NzAzOTE1ODd9.R8VvxN9CUZpo_XJKz6pnEPH3OVIrW0kDwe6MJqD9k5c"
+}
+
+```
+
+<b>Response :</b>
+```
+{
+    "success": true,
+    "message": "Successfully Get steps overview the recipes with id 3",
+    "data": {
+        "name": "Easy Pancakes",
+        "ingredients": [
+            {
+                "Id": 9,
+                "Entry": "100g plain flour",
+                "Type": "flour",
+                "RecipeId": 3,
+                "CreatedAt": "2022-12-06 17:03:41",
+                "UpdatedAt": "2022-12-06 17:03:41"
+            },
+            {
+                "Id": 10,
+                "Entry": "2 large eggs",
+                "Type": "egg",
+                "RecipeId": 3,
+                "CreatedAt": "2022-12-06 17:03:41",
+                "UpdatedAt": "2022-12-06 17:03:41"
+            },
+            {
+                "Id": 11,
+                "Entry": "300ml milk",
+                "Type": "milk",
+                "RecipeId": 3,
+                "CreatedAt": "2022-12-06 17:03:41",
+                "UpdatedAt": "2022-12-06 17:03:41"
+            },
+            {
+                "Id": 12,
+                "Entry": "1 tbsp sunflower oil",
+                "Type": "sunflour oil",
+                "RecipeId": 3,
+                "CreatedAt": "2022-12-06 17:03:41",
+                "UpdatedAt": "2022-12-06 17:03:41"
+            }
+        ],
+        "step_count": 5
+    }
+}
+```
+---
+
+
+### GET /recipe-premium/3/all
+Get details stpes using token `(Access premium)`.<br>
+
+<b>Request Header :</b>
+```
+{
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjcwMzg3OTg3LCJleHAiOjE2NzAzOTE1ODd9.R8VvxN9CUZpo_XJKz6pnEPH3OVIrW0kDwe6MJqD9k5c"
+}
+```
+
+<b>Response :</b>
+```
+{
+    "success": true,
+    "message": "Successfully Get steps overview the recipes with id 3",
+    "data": {
+        "name": "Easy Pancakes",
+        "ingredients": [
+            {
+                "Id": 9,
+                "Entry": "100g plain flour",
+                "Type": "flour",
+                "RecipeId": 3,
+                "CreatedAt": "2022-12-06 17:03:41",
+                "UpdatedAt": "2022-12-06 17:03:41"
+            },
+            {
+                "Id": 10,
+                "Entry": "2 large eggs",
+                "Type": "egg",
+                "RecipeId": 3,
+                "CreatedAt": "2022-12-06 17:03:41",
+                "UpdatedAt": "2022-12-06 17:03:41"
+            },
+            {
+                "Id": 11,
+                "Entry": "300ml milk",
+                "Type": "milk",
+                "RecipeId": 3,
+                "CreatedAt": "2022-12-06 17:03:41",
+                "UpdatedAt": "2022-12-06 17:03:41"
+            },
+            {
+                "Id": 12,
+                "Entry": "1 tbsp sunflower oil",
+                "Type": "sunflour oil",
+                "RecipeId": 3,
+                "CreatedAt": "2022-12-06 17:03:41",
+                "UpdatedAt": "2022-12-06 17:03:41"
+            }
+        ],
+        "steps": [
+            {
+                "Id": 11,
+                "Step_Id": 1,
+                "Text": "Put 100g plain flour, 2 large eggs, 300ml milk, 1 tbsp sunflower or vegetable oil and a pinch of salt into a bowl large",
+                "RecipeId": 3,
+                "CreatedAt": "2022-12-06 17:03:41",
+                "UpdatedAt": "2022-12-06 17:03:41"
+            },
+            {
+                "Id": 12,
+                "Step_Id": 2,
+                "Text": "Set aside for 30 mins to rest if you have time, or start cooking straight away.",
+                "RecipeId": 3,
+                "CreatedAt": "2022-12-06 17:03:41",
+                "UpdatedAt": "2022-12-06 17:03:41"
+            },
+            {
+                "Id": 13,
+                "Step_Id": 3,
+                "Text": "Set a medium frying pan or crêpe pan over a medium heat and carefully wipe it with some oiled kitchen paper.",
+                "RecipeId": 3,
+                "CreatedAt": "2022-12-06 17:03:41",
+                "UpdatedAt": "2022-12-06 17:03:41"
+            },
+            {
+                "Id": 14,
+                "Step_Id": 4,
+                "Text": "When hot, cook your pancakes for 1 min on each side until golden, keeping them warm in a low oven as you go.",
+                "RecipeId": 3,
+                "CreatedAt": "2022-12-06 17:03:41",
+                "UpdatedAt": "2022-12-06 17:03:41"
+            },
+            {
+                "Id": 15,
+                "Step_Id": 5,
+                "Text": "Serve with lemon wedges and caster sugar, or your favourite filling. Once cold, you can layer the pancakes between baking",
+                "RecipeId": 3,
+                "CreatedAt": "2022-12-06 17:03:41",
+                "UpdatedAt": "2022-12-06 17:03:41"
+            }
+        ]
+    }
+}
+```
+---
+
+### GET /recipe-premium/3/2
+Get single step by recipes id & step id using token `(Access premium)`.<br>
+
+<b>Request Header :</b>
+```
+{
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjcwMzg3OTg3LCJleHAiOjE2NzAzOTE1ODd9.R8VvxN9CUZpo_XJKz6pnEPH3OVIrW0kDwe6MJqD9k5c"
+}
+```
+
+<b>Response :</b>
+
+```
+{
+    "success": true,
+    "message": "Successfully Get single set the recipes with recipe id 3 and step id 2",
+    "data": [
+        {
+            "Id": 12,
+            "Step_Id": 2,
+            "Text": "Set aside for 30 mins to rest if you have time, or start cooking straight away.",
+            "RecipeId": 3,
+            "CreatedAt": "2022-12-06 17:03:41",
+            "UpdatedAt": "2022-12-06 17:03:41"
         }
     ]
 }
