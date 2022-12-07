@@ -419,6 +419,26 @@ Recipes.findById = (recipesId, result) => {
   });
 };
 
+
+Recipes.findByIdWithRole = (recipesId, role, result) => {
+  const sql = `SELECT * FROM recipes WHERE Id = ${recipesId} AND Category = '${role}'`;
+  db.all(sql, [], (err, items) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (items.length > 0) {
+      result(null, { status: true, message: "Get recipes with recipes id "+recipesId, data: items, count: items.length });
+      return;
+    }
+
+    // not found Items with the recipesNo
+    result({ kind: "not_found" }, null);
+  });
+};
+
 Recipes.findByIdAndUpdate = (recipesId, name, category, result) => {
   const sql = `UPDATE recipes SET Name='${name}', Category='${category}' WHERE Id = ${recipesId};`;
   db.all(sql, [], (err, items) => {
@@ -485,6 +505,23 @@ Recipes.deleteById = async (Id, result) => {
   });
 };
 
+const getAllRecipes = (result) => {
+  const sql = `SELECT * FROM recipes`;
+  db.all(sql, [], (err, recipes) => {
+    if (err) {
+      console.log("error: ", err);
+      return;
+    }
+
+    if (recipes.length > 0) {
+      result(null, { status: true, message: "Get recipes with catagory", data: recipes, count: recipes.length });
+      return;
+    }
+
+    console.log("Recipes: ", recipes.length);
+  });
+}
+
 const initRecipesTable = () => {
   const sql = `CREATE TABLE IF NOT EXISTS recipes (
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -536,50 +573,76 @@ const dropTable = () => {
 initRecipesTable();
 
 const initialRecipesRecords = () => {
-  initRecipes.forEach(async(element) => {
-    // Create a Recipes
-    const recipes = {
-        Name: element.name,
-        Category: element.category,
-    };
+  var newArr = [];
 
-    // Save Recipes in the database
-    await Recipes.create(recipes, async(err, recipesData) => {
-      if (err)
-        return next(
-          new Error(
-            err.message || "Some error occurred while creating the Recipes."
-          )
-        );
-
-      await Ingredients.craeteMulti( element.ingredients, recipesData.data.Id,
-        async(err, ingredientsData) => {
-          if (err)
-            return next(
-              new Error(
-                err.message ||
-                  "Some error occurred while creating the ingredients."
-              )
-            );
-
-          if (ingredientsData.status === true) {
-            await Steps.craeteMulti(element.steps, recipesData.data.Id, (err, stepsData) => {
-              if (err)
-                return next(
-                  new Error(
-                    err.message ||
-                      "Some error occurred while creating the steps."
-                  )
-                );
-
-              if (stepsData.status === true) {
-                console.log("💚 Successfully created the recipes");
-              }
-            });
-          }
-        }
-      );
+  var bar = new Promise((resolve, reject) => {
+    initRecipes.forEach(async(element, index, array) => {
+      // Create a Recipes
+      const recipes = {
+          Name: element.name,
+          Category: element.category,
+      };
+  
+      // Save Recipes in the database
+      await Recipes.create(recipes, async(err, recipesData) => {
+        if (err)
+          return next(
+            new Error(
+              err.message || "Some error occurred while creating the Recipes."
+            )
+          );
+              
+  
+        newArr.push({data: element, recid: recipesData.data.Id})
+        if(index === array.length - 1) resolve();
+      });
     });
+  })
+
+  bar.then(() => {
+    getAllRecipes((err, data) => {
+      if (err)
+      return next(
+        new Error(
+          err.message || "Some error occurred while getting the Recipes."
+        )
+      );
+
+      
+      data.data.forEach(async(responseData) => {
+        initRecipes.forEach(async(elementNew, index, array) => {
+          if(elementNew.name === responseData.Name){
+            await Ingredients.craeteMulti( elementNew.ingredients, responseData.Id,
+              async(err, ingredientsData) => {
+                if (err)
+                  return next(
+                    new Error(
+                      err.message ||
+                        "Some error occurred while creating the ingredients."
+                    )
+                  );
+        
+                if (ingredientsData.status === true) {
+                  await Steps.craeteMulti(elementNew.steps, responseData.Id, (err, stepsData) => {
+                    if (err)
+                      return next(
+                        new Error(
+                          err.message ||
+                            "Some error occurred while creating the steps."
+                        )
+                      );
+        
+                    if (stepsData.status === true) {
+                      console.log("💚 Successfully created the recipes");
+                    }
+                  });
+                }
+              }
+            );
+          }
+          });
+      });
+    })
   });
 };
 

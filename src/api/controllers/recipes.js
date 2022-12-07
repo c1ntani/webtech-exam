@@ -195,7 +195,7 @@ exports.getStepsOverview = BigPromise((req, res, next) => {
     return next(new Error("Please provide the recipe id."));
   }
 
-  Recipes.findById(recipe_id, (err, resultRecipe) => {
+  Recipes.findByIdWithRole(recipe_id, 'free', (err, resultRecipe) => {
     if (err) return next(new Error(err.message || "Recipe not found."));
 
     Ingredients.findByRecipesId(recipe_id, (err, resultIngredients) => {
@@ -227,7 +227,7 @@ exports.getDetailsSteps = BigPromise((req, res, next) => {
     return next(new Error("Please provide the recipe id."));
   }
 
-  Recipes.findById(recipe_id, (err, resultRecipe) => {
+  Recipes.findByIdWithRole(recipe_id, 'free', (err, resultRecipe) => {
     if (err) return next(new Error(err.message || "Recipe not found."));
 
     Ingredients.findByRecipesId(recipe_id, (err, resultIngredients) => {
@@ -259,7 +259,116 @@ exports.getSingleSteps = BigPromise((req, res, next) => {
     return next(new Error("Please provide the recipe id OR step id."));
   }
 
-  Recipes.findById(recipe_id, (err, resultRecipe) => {
+  Recipes.findByIdWithRole(recipe_id, 'free', (err, resultRecipe) => {
+    if (err) return next(new Error(err.message || "Recipe not found."));
+
+      Steps.findByRecipesId(recipe_id, (err, resultSteps) => {
+        if (err) return next(new Error(err.message || "Some error occurred while getting the Ingredients."));
+
+        if (resultSteps.status === true) {
+          var resultArr = resultSteps.data.filter((ele) => {
+            return ele.Step_Id == step_id
+          })
+          return res.status(200).json({
+            success: true,
+            message: "Successfully Get single set the recipes with recipe id " + recipe_id + " and step id " + step_id,
+            data: resultArr
+          });
+        }
+      });
+  });
+})
+
+
+
+
+
+exports.getAllRecipesForPremium = BigPromise((req, res, next) => {
+  Recipes.getAllPremiumRecipes((err, resultRecipe) => {
+    if (err) return next(new Error(err.message || "Recipe not found."));
+
+    if (resultRecipe.status === true) {
+      return res.status(200).json({
+        success: true,
+        message: "Successfully get the free recipes",
+        data: resultRecipe.data
+      });
+    }
+  });
+})
+
+exports.getStepsOverviewPremium = BigPromise((req, res, next) => {
+  const { recipe_id } = req.params;
+
+  if (!recipe_id) {
+    return next(new Error("Please provide the recipe id."));
+  }
+
+  Recipes.findByIdWithRole(recipe_id, 'premium', (err, resultRecipe) => {
+    if (err) return next(new Error(err.message || "Recipe not found."));
+
+    Ingredients.findByRecipesId(recipe_id, (err, resultIngredients) => {
+      if (err) return next(new Error(err.message || "Some error occurred while getting the Ingredients."));
+
+      Steps.findByRecipesId(recipe_id, (err, resultSteps) => {
+        if (err) return next(new Error(err.message || "Some error occurred while getting the Ingredients."));
+
+        if (resultSteps.status === true) {
+          return res.status(200).json({
+            success: true,
+            message: "Successfully Get steps overview the recipes with id " + recipe_id,
+            data: {
+              name: resultRecipe.data[0].Name,
+              ingredients: resultIngredients.data,
+              step_count: resultSteps.data.length
+            }
+          });
+        }
+      });
+    });
+  });
+})
+
+exports.getDetailsStepsPremium = BigPromise((req, res, next) => {
+  const { recipe_id } = req.params;
+
+  if (!recipe_id) {
+    return next(new Error("Please provide the recipe id."));
+  }
+
+  Recipes.findByIdWithRole(recipe_id, 'premium', (err, resultRecipe) => {
+    if (err) return next(new Error(err.message || "Recipe not found."));
+
+    Ingredients.findByRecipesId(recipe_id, (err, resultIngredients) => {
+      if (err) return next(new Error(err.message || "Some error occurred while getting the Ingredients."));
+
+      Steps.findByRecipesId(recipe_id, (err, resultSteps) => {
+        if (err) return next(new Error(err.message || "Some error occurred while getting the Ingredients."));
+
+        if (resultSteps.status === true) {
+          return res.status(200).json({
+            success: true,
+            message: "Successfully Get steps overview the recipes with id " + recipe_id,
+            data: {
+              name: resultRecipe.data[0].Name,
+              ingredients: resultIngredients.data,
+              steps: resultSteps.data
+            }
+          });
+        }
+      });
+    });
+  });
+})
+
+exports.getSingleStepsPremium = BigPromise((req, res, next) => {
+  const { recipe_id, step_id } = req.params;
+
+  if (!recipe_id || !step_id) {
+    return next(new Error("Please provide the recipe id OR step id."));
+  }
+
+  Recipes.findByIdWithRole(recipe_id, 'premium', (err, resultRecipe) => {
     if (err) return next(new Error(err.message || "Recipe not found."));
 
       Steps.findByRecipesId(recipe_id, (err, resultSteps) => {
@@ -323,20 +432,6 @@ exports.searchIngredientsListAll = BigPromise((req, res, next) => {
         message: "Successfully search by the ingredient name " + ingredient,
         search: ingredient,
         data: resultIngredient.data
-      });
-    }
-  });
-})
-
-exports.getAllRecipesForPremium = BigPromise((req, res, next) => {
-  Recipes.getAllPremiumRecipes((err, resultRecipe) => {
-    if (err) return next(new Error(err.message || "Recipe not found."));
-
-    if (resultRecipe.status === true) {
-      return res.status(200).json({
-        success: true,
-        message: "Successfully get the premium recipes",
-        data: resultRecipe.data
       });
     }
   });

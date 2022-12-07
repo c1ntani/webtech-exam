@@ -10,10 +10,13 @@ const {
     replaceRecipes,
     deleteRecipes,
     getAllRecipesForFree,
-    getAllRecipesForPremium,
     getStepsOverview,
     getDetailsSteps,
     getSingleSteps,
+    getAllRecipesForPremium,
+    getStepsOverviewPremium,
+    getDetailsStepsPremium,
+    getSingleStepsPremium,
     searchIngredient,
     searchIngredientsListAll
 } = require("../controllers/recipes");
@@ -35,6 +38,11 @@ router.route("/recipe/:recipe_id/all").get(isLoggedIn, getDetailsSteps); // Get 
 router.route("/recipe/:recipe_id/:step_id").get(isLoggedIn, getSingleSteps); // Get details stpes
 
 router.route("/recipe-premium/").get(isLoggedIn, isPremium, getAllRecipesForPremium); // Get details stpes
+router.route("/recipe-premium/:recipe_id").get(isLoggedIn, isPremium, getStepsOverviewPremium); // Get step overview by recipes id
+router.route("/recipe-premium/:recipe_id/all").get(isLoggedIn, isPremium, getDetailsStepsPremium); // Get details stpes
+router.route("/recipe-premium/:recipe_id/:step_id").get(isLoggedIn, isPremium, getSingleStepsPremium); // Get details stpes
+
+
 router.route("/search/:ingredient").get(isLoggedIn, isPremium, searchIngredient); // Get details stpes
 router.route("/ingredients/:ingredient").get(isLoggedIn, isPremium, searchIngredientsListAll); // Get details stpes
 
