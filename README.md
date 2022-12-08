@@ -55,16 +55,55 @@ passsword: Cintani@123
 ```
 
 ```
-premium user
-email: rahul@gmail.com
-passsword: Rahul@123
-```
-
-```
 admin
 email: admin@gmail.com
 passsword: Admin@123
 ```
+
+### POST /signup-free
+This api use for Create free User.<br>
+
+<b>Request body :</b>
+```
+{
+    "name": "Rohit",
+    "email": "panditrohit532@gmail.com",
+    "password": "Rohit@123"
+}
+
+```
+
+<b>Response :</b>
+```
+{
+    "status": true,
+    "message": "Create free user successfully."
+}
+```
+---
+
+
+### POST /signup-premium
+This api use for Create premium User.<br>
+
+<b>Request body :</b>
+```
+{
+    "name": "Pratik",
+    "email": "pratik10mahandule@gmail.com",
+    "password": "Pratik@123"
+}
+
+```
+
+<b>Response :</b>
+```
+{
+    "status": true,
+    "message": "Create free premium successfully."
+}
+```
+---
 
 
 ### POST /login
