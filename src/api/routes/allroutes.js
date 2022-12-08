@@ -1,7 +1,9 @@
 const express = require("express");
 
 const {
-  loginUser
+  loginUser,
+  createFreeUser,
+  createPremiumUser
 } = require("../controllers/auth");
 
 const {
@@ -26,6 +28,8 @@ const router = express.Router();
 
 
 router.route("/login").post(loginUser); // login user
+router.route("/signup-free").post(createFreeUser); // create free user
+router.route("/signup-premium").post(createPremiumUser); // create premium user
 
 router.route("/recipe").post(isLoggedIn, isAdmin, createRecipes); // create recipes
 router.route("/recipe/:recipe_id").patch(isLoggedIn, isAdmin, updateRecipes); // update recipes

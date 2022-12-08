@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 
 const initUserArray = [
   { name: 'Cintani Muljono', email: 'cintani_muljono@hotmail.com', password: "Cintani@123", userType: 'free'},
-  { name: 'Rahul', email: 'rahul@gmail.com', password: "Rahul@123", userType: 'premium'},
   { name: 'Admin', email: 'admin@gmail.com', password: "Admin@123", userType: 'admin'},
 ]
 
@@ -24,12 +23,7 @@ Users.getUserUsingEmail = async(email, result) => {
       result(err, null);
     }
 
-    if (users.length > 0) {
-      result(null, users);
-      return;
-    }
-
-    result({ kind: "not_found" }, null);
+    result(null, users);
   })
 }
 
@@ -48,6 +42,20 @@ Users.getUserUsingId = async(Id, result) => {
     }
 
     result({ kind: "not_found" }, null);
+  })
+}
+
+Users.createUser = async(user, result) => {
+  const sql = "INSERT INTO users (Name, Email, Password, UserType) VALUES (?, ?, ?, ?)";
+
+  db.run(sql, [user.Name, user.Email, await bcrypt.hash(user.Password, 10), user.UserType], (err, users) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+    }
+
+    result(null, { status: true, message: `Create ${user.UserType} user successfully.` });
+    return;
   })
 }
 
